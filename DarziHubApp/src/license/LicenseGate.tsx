@@ -9,10 +9,13 @@ import { C } from '../lib/theme';
 import { getDeviceId } from './deviceId';
 import { activateLicense, CheckResult, checkSavedLicense, REASON_KEYS } from './licenseClient';
 import type { Payload } from './licenseCore';
+import { FeatureKey, featureOn } from './permissions';
 
 type Info = { payload: Payload; daysLeft: number | null };
 const Ctx = createContext<Info | null>(null);
 export const useLicense = () => useContext(Ctx);
+/** can('stock.manage') – license decides; keys the license does not mention use the schema default. */
+export const useCan = () => { const i = useContext(Ctx); return (k: FeatureKey) => featureOn(i?.payload.features, k); };
 
 export default function LicenseGate({ children }: { children: ReactNode }) {
   const { t, toast } = useApp();

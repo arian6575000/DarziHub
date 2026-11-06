@@ -5,10 +5,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApp } from '../../ctx/AppContext';
 import { C, FONT_UR_BOLD } from '../../lib/theme';
+import { useCan } from '../../license/LicenseGate';
 
 export default function TabsLayout() {
   const { t, rtl } = useApp();
   const insets = useSafeAreaInsets();
+  const can = useCan();
+  const showAccounts = can('accounts.khata') || can('accounts.expenses') || can('accounts.reports') || can('stock.manage');
   const icon = (name: React.ComponentProps<typeof Ionicons>['name'], outline: React.ComponentProps<typeof Ionicons>['name']) =>
     ({ color, focused }: { color: any; focused: boolean }) => <Ionicons name={focused ? name : outline} size={23} color={color} />;
   return (
@@ -23,7 +26,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ title: t('navHome'), tabBarIcon: icon('home', 'home-outline') }} />
       <Tabs.Screen name="orders" options={{ title: t('navOrders'), tabBarIcon: icon('cut', 'cut-outline') }} />
       <Tabs.Screen name="customers" options={{ title: t('navCustomers'), tabBarIcon: icon('people', 'people-outline') }} />
-      <Tabs.Screen name="accounts" options={{ title: t('navAccounts'), tabBarIcon: icon('wallet', 'wallet-outline') }} />
+      <Tabs.Screen name="accounts" options={{ href: showAccounts ? undefined : null, title: t('navAccounts'), tabBarIcon: icon('wallet', 'wallet-outline') }} />
       <Tabs.Screen name="settings" options={{ title: t('navSettings'), tabBarIcon: icon('settings', 'settings-outline') }} />
     </Tabs>
   );

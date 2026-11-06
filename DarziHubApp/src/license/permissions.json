@@ -1,0 +1,81 @@
+{
+  "project": {
+    "name": "DarziHub",
+    "code": "darzihub",
+    "platform": "android_apk",
+    "icon": "scissors",
+    "description": "Tailor shop manager: customers, measurements, orders, khata, stock and receipts (offline, Android).",
+    "current_version": "1.3.0",
+    "min_supported_version": "1.0.0"
+  },
+  "permission_schema": [
+    {
+      "module": "accounts",
+      "label": "Accounts (Hisaab Kitab)",
+      "icon": "wallet",
+      "description": "Khata, expenses and monthly reports.",
+      "features": [
+        {
+          "key": "accounts.khata",
+          "label": "Customer Khata & Payments",
+          "description": "Customer ledger, advance and balance payments, cash book",
+          "default": true
+        },
+        {
+          "key": "accounts.expenses",
+          "label": "Expenses",
+          "description": "Shop expense entries",
+          "default": true
+        },
+        {
+          "key": "accounts.reports",
+          "label": "Monthly Reports & CSV",
+          "description": "Profit summary and CSV export",
+          "default": true
+        }
+      ]
+    },
+    {
+      "module": "stock",
+      "label": "Stock",
+      "icon": "boxes",
+      "description": "Cloth, thread and button inventory.",
+      "features": [
+        {
+          "key": "stock.manage",
+          "label": "Stock Management",
+          "description": "Stock items, in/out log, low stock alerts",
+          "default": true
+        }
+      ]
+    },
+    {
+      "module": "print",
+      "label": "Printing & Sharing",
+      "icon": "printer",
+      "description": "Receipts, slips and tags.",
+      "features": [
+        {
+          "key": "print.receipts",
+          "label": "Print / PDF Receipts",
+          "description": "Receipt, slip, tag and fabric slip printing and PDF export",
+          "default": true
+        }
+      ]
+    },
+    {
+      "module": "backup",
+      "label": "Backup",
+      "icon": "cloud",
+      "description": "Backup and restore.",
+      "features": [
+        {
+          "key": "backup.export",
+          "label": "Backup & Restore",
+          "description": "Export and import backup files (password protected)",
+          "default": true
+        }
+      ]
+    }
+  ]
+}

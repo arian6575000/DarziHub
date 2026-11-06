@@ -11,9 +11,11 @@ import { removePin } from '../lib/lock';
 import { Fmt } from '../lib/format';
 import { useLoad } from '../lib/hooks';
 import { C } from '../lib/theme';
+import { useCan } from '../license/LicenseGate';
 import { cleanOrphanPhotos } from '../lib/photos';
 
 export default function BackupScreen() {
+  const canBackup = useCan()('backup.export');
   const { t, lang, toast, confirm, reloadSettings, refreshReminders } = useApp();
   const [st, reload] = useLoad(() => Repo.getSettings(), []);
   const [pending, setPending] = useState<any | null>(null);
@@ -61,6 +63,7 @@ export default function BackupScreen() {
     toast(t('erased'), 'success'); router.replace('/');
   };
   const d = pending?.data || {};
+  if (!canBackup) return <Screen back title={t('backupRestore')}><Muted center style={{ marginTop: 40 }}>{t('featureLocked')}</Muted></Screen>;
   return (
     <Screen back title={t('backupRestore')}>
       <SectionLabel>{`${t('export')} · ${t('lastBackup')}: ${st?.lastBackupAt ? Fmt.date(st.lastBackupAt, lang) : t('never')}`}</SectionLabel>

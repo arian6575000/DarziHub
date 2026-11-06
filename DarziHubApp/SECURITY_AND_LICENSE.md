@@ -29,3 +29,15 @@ Fix: cards/icon buttons/tab bar/toast opaque, elevation sirf opaque views par (2
 ## v1.2.0
 - **Shop type** (Settings > Shop type): Gents / Ladies / Both. Sirf ek type ho to customer form mein type ka selector nahi aata, order mein sirf usi type ke garments, default rates mein sirf usi ke garments, customer detail/measurements mein sirf usi ke. Pehle ke orders ke garments edit mein nazar aate rahte hain. Shop type "Both" ho to customer ki apni type ke hisab se filter hota hai.
 - **Company credit** "RetailX Solution · 03286575000": dashboard, settings, lock screen, activation screen, har receipt/slip/tag/fabric slip (preview, print, PDF), monthly CSV, aur backup file mein.
+
+## v1.3.0 – Project registration + permissions
+**Flow (har naye project ke liye ek jaisa):**
+1. `src/license/permissions.json` = is app ki permissions ka source (project info + `permission_schema` + defaults). App mein naya feature lagao to pehle yahan add karo, phir `can('key')` use karo.
+2. `npm install` ke baad `npm run license:project` chalao. Ye:
+   - pehli baar Ed25519 keypair banata hai -> `.license/darzihub.keys.json` (git-ignored, **backup lo, kisi ko mat do**),
+   - `.license/darzihub.project.json` banata hai = Hub ke `POST /api/v1/admin/projects` ka tayyar JSON (name, code, platform, keys, permission_schema, default_features),
+   - **sirf public key** `src/license/config.ts` mein likh deta hai.
+3. Hub dashboard > Projects > Add project mein us JSON ki fields paste karo (ya API se POST). Hub project ko pehchan leta hai; Generator sync ke baad is project ke licenses banata hai, features toggle ke saath.
+4. APK dobara build karo (public key ab config mein hai).
+
+**App mein enforcement** (`useCan()`): accounts.khata / accounts.expenses / accounts.reports (Accounts tab ke hisse), stock.manage, print.receipts (Print/PDF buttons), backup.export (Backup screen + cards). License mein jo key na ho, uska default permissions.json se aata hai; license mein `false` ho to feature band.

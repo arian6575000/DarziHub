@@ -25,6 +25,7 @@ export const EXTRA: Record<string, [string, string]> = {
   backupNote: ['All data stays on this phone. Export a backup regularly and keep a copy safe (WhatsApp/Drive), especially before changing phones or uninstalling the app.',
     'سارا ڈیٹا اسی فون میں رہتا ہے۔ باقاعدگی سے بیک اپ ایکسپورٹ کر کے محفوظ جگہ (واٹس ایپ/ڈرائیو) رکھیں، خاص طور پر فون بدلنے یا ایپ ہٹانے سے پہلے۔'],
   shopType: ['Shop type', 'دکان کی قسم'], shopTypeHint: ['Choose Gents or Ladies if you stitch for only one — the other side\'s garments and options are hidden.', 'اگر آپ صرف جینٹس یا صرف لیڈیز سلائی کرتے ہیں تو وہی چنیں — دوسری طرف کے کپڑے اور آپشن چھپ جائیں گے۔'],
+  featureLocked: ['Not included in your license', 'یہ فیچر آپ کے لائسنس میں شامل نہیں'],
   pinWait: ['Too many attempts. Try again in {n}s', 'بہت زیادہ کوششیں۔ {n} سیکنڈ بعد کوشش کریں'],
   useBiometric: ['Use fingerprint / face', 'فنگر پرنٹ / چہرہ استعمال کریں'], biometricLock: ['Biometric unlock', 'بایومیٹرک ان لاک'],
   licTitle: ['Activation required', 'ایکٹیویشن ضروری ہے'], licDeviceId: ['Your Device ID', 'آپ کا ڈیوائس آئی ڈی'],

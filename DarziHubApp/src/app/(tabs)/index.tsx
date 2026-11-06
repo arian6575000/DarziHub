@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../ctx/AppContext';
+import { useCan } from '../../license/LicenseGate';
 import { Repo } from '../../db/repo';
 import { useLoad } from '../../lib/hooks';
 import { Button, Card, Credit, Empty, Grid, Hero, ListItem, Loading, Muted, Row, Screen, SectionLabel, StatCard, T } from '../../ui/kit';
@@ -11,6 +12,7 @@ import { Fmt } from '../../lib/format';
 import { C, TONES } from '../../lib/theme';
 
 export default function Dashboard() {
+  const canBackup = useCan()('backup.export');
   const { t, lang, settings, setLang } = useApp();
   const [data, reload] = useLoad(async () => {
     const [s, custMap] = await Promise.all([Repo.dashboardStats(), Repo.customerMap()]);
@@ -40,7 +42,7 @@ export default function Dashboard() {
     return (
       <>
         <Hero label={t('pendingBalance')} value={Fmt.money(s.receivable)} hint={t('pendingBalanceHint')} />
-        {s.backupDue ? (
+        {s.backupDue && canBackup ? (
           <Card onPress={() => router.push('/backup')}>
             <Row gap={12}>
               <Ionicons name="cloud-upload-outline" size={26} color={C.primary} />

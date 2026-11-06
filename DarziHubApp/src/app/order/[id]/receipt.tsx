@@ -6,6 +6,7 @@ import * as Sharing from 'expo-sharing';
 import { Asset } from 'expo-asset';
 import { File } from 'expo-file-system';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useCan } from '../../../license/LicenseGate';
 import { Button, Loading, Muted, Row, Screen, Segmented } from '../../../ui/kit';
 import { useApp } from '../../../ctx/AppContext';
 import { Repo } from '../../../db/repo';
@@ -31,6 +32,7 @@ async function loadUrduFont(): Promise<string | null> {
 }
 
 export default function ReceiptScreen() {
+  const canPrint = useCan()('print.receipts');
   const { id, view: viewParam } = useLocalSearchParams<{ id: string; view?: string }>();
   const { t, lang: appLang, settings, toast } = useApp();
   const [data, setData] = useState<{ order: Order; customer: Customer | null; payments: Payment[]; photos: string[] } | null>(null);
@@ -101,8 +103,8 @@ export default function ReceiptScreen() {
         {data ? <WebView originWhitelist={['about:*']} javaScriptEnabled={false} domStorageEnabled={false} allowFileAccess={false} allowFileAccessFromFileURLs={false} allowUniversalAccessFromFileURLs={false} setSupportMultipleWindows={false} onShouldStartLoadWithRequest={(r) => r.url === 'about:blank' || r.url.startsWith('data:') || r.url.startsWith('about:')} source={{ html: previewHtml }} style={{ backgroundColor: 'transparent' }} /> : <Loading />}
       </View>
       <Row style={{ marginTop: 10 }}>
-        <Button block icon="print" label={t('print')} onPress={print} loading={busy} disabled={!data} />
-        <Button block variant="ghost" icon="document" label="PDF" onPress={pdf} disabled={!data || busy} />
+        {canPrint ? <Button block icon="print" label={t('print')} onPress={print} loading={busy} disabled={!data} /> : null}
+        {canPrint ? <Button block variant="ghost" icon="document" label="PDF" onPress={pdf} disabled={!data || busy} /> : null}
         <Button block variant="ghost" icon="logo-whatsapp" label="WhatsApp" onPress={whatsapp} disabled={!data} />
       </Row>
       <Muted style={{ marginTop: 6 }}>{t('pdfHint')}</Muted>

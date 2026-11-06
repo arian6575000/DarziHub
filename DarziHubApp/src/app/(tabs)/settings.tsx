@@ -3,6 +3,7 @@ import { Image, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import Constants from 'expo-constants';
+import { useCan } from '../../license/LicenseGate';
 import { Button, Card, Credit, Field, ListItem, Muted, NumField, Row, Screen, SectionLabel, Segmented, SelectField, Sheet, T } from '../../ui/kit';
 import { usePinPrompt } from '../../ui/PinPrompt';
 import { useApp } from '../../ctx/AppContext';
@@ -14,6 +15,7 @@ import { pickLogoDataUrl } from '../../lib/photos';
 import { C } from '../../lib/theme';
 
 export default function SettingsScreen() {
+  const canBackup = useCan()('backup.export');
   const { t, lang, settings, saveSettings, setLang, toast, refreshReminders } = useApp();
   const [f, setF] = useState<Settings>(settings);
   const [rates, setRates] = useState<Record<string, string>>({});
@@ -136,13 +138,13 @@ export default function SettingsScreen() {
 
       <Button icon="checkmark" label={t('saveChanges')} onPress={save} />
 
-      <Card style={{ marginTop: 16 }} onPress={() => router.push('/backup')}>
+      {canBackup ? <Card style={{ marginTop: 16 }} onPress={() => router.push('/backup')}>
         <Row gap={12}>
           <Ionicons name="cloud-upload" size={26} color={C.primary} />
           <View style={{ flex: 1 }}><T bold size={15}>{t('backupRestore')}</T><Muted>{t('backupHint')}</Muted></View>
           <Ionicons name={lang === 'ur' ? 'chevron-back' : 'chevron-forward'} size={18} color={C.faint} />
         </Row>
-      </Card>
+      </Card> : null}
       <Muted center style={{ marginTop: 8 }}>{`DarziHub · ${t('version')} ${Constants.expoConfig?.version ?? ''}`}</Muted>
       <Credit />
 
