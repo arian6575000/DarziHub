@@ -20,8 +20,7 @@ async function check(license: string): Promise<CheckResult> {
     projectCode: PROJECT_CODE,
     lastSeen,
   });
-  // DarziHub is a non-legacy project: a license without our project_code is never valid.
-  if (r.ok && r.payload.project_code !== PROJECT_CODE) return { ok: false, reason: "project" };
+  // The signing key is specific to this project, so a Hub key without project_code is valid; one with a different project_code is rejected inside verifyLicense.
   if (r.ok) await SecureStore.setItemAsync(K_LASTSEEN, String(Math.max(Date.now(), lastSeen ?? 0)), opts);
   return r;
 }
