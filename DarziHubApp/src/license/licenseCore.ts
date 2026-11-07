@@ -6,6 +6,8 @@ import { decodeBase64, encodeBase64 } from "tweetnacl-util";
 export type FeatureMap = Record<string, boolean | string | number>;
 
 export const PREFIX = "MPOS-LIC-";
+// The Hub and the Generator may label keys with any of these; the signature (not the label) is what is trusted.
+export const ACCEPTED_PREFIXES = ["MPOS-LIC-", "RETAILX-LIC-", "DPOS-LIC-"];
 export const LIFETIME_DATE = "2099-12-31";
 
 export type Payload = {
@@ -175,8 +177,9 @@ export function verifyLicense(
 ): VerifyResult {
   try {
     const key = license.trim();
-    if (!key.startsWith(PREFIX)) return { ok: false, reason: "format" };
-    const parts = key.slice(PREFIX.length).split(".");
+    const prefix = ACCEPTED_PREFIXES.find((x) => key.toUpperCase().startsWith(x));
+    if (!prefix) return { ok: false, reason: "format" };
+    const parts = key.slice(prefix.length).split(".");
     if (parts.length !== 2) return { ok: false, reason: "format" };
     const body = unb64u(parts[0]);
     const sig = unb64u(parts[1]);

@@ -78,7 +78,7 @@ export default function LicenseGate({ children }: { children: ReactNode }) {
       </Card>
       <Card>
         <Field label={t('licPaste')} value={input} onChangeText={setInput} multiline autoCapitalize="none" autoCorrect={false} ltr
-          placeholder="MPOS-LIC-…" />
+          placeholder="Paste your license key" />
         {error ? <T size={13.5} bold color={C.danger} style={{ marginBottom: 10 }}>{error}</T> : null}
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <Button block variant="ghost" icon="clipboard-outline" label={t('licPasteBtn')} onPress={paste} />
