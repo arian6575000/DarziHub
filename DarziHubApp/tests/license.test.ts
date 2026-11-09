@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { buildPayload, generateKeyPair, signLicense, verifyLicense } from '../src/license/licenseCore';
+import { buildPayload, generateKeyPair, signLicense, verifyLicense, formatAppDeviceId } from '../src/license/licenseCore';
 
 const kp = generateKeyPair();
 const other = generateKeyPair();
@@ -38,3 +38,18 @@ assert.deepEqual(verifyLicense(HUB_KEY, { publicKeyHex: HUB_PUB, machineId: '111
 assert.deepEqual(verifyLicense(HUB_KEY, { publicKeyHex: kp.publicKeyHex, machineId: '9107-7FE3-4C6C-0DD3-5901', now: hubNow }), { ok: false, reason: 'signature' });
 assert.equal(verifyLicense('RETAILX-LIC-' + HUB_KEY.slice(12), { publicKeyHex: HUB_PUB, machineId: '9107-7FE3-4C6C-0DD3-5901', now: hubNow }).ok, true);
 console.log('license tests passed');
+
+// ---- app-specific device IDs: same phone, different app => different ID, and a license for one app never opens another ----
+const HEX = '87A9F285E2DF1234ABCD';
+assert.equal(formatAppDeviceId('RetailXPOS', HEX), 'RetailXPOS-87A9-F285-E2DF');
+assert.notEqual(formatAppDeviceId('DarziHub', HEX), formatAppDeviceId('RetailXPOS', HEX));
+assert.throws(() => formatAppDeviceId('Retail X', HEX));
+assert.throws(() => formatAppDeviceId('RetailXPOS', 'ABC'));
+{
+  const idA = 'DarziHub-87A9-F285-E2DF', idB = 'RetailXPOS-87A9-F285-E2DF';
+  const licA = signLicense(buildPayload({ machineId: idA, clientName: 'C', planName: 'Pro', maxUsers: 1, features: {}, expiry: { days: 30 }, idFormat: 'any', project: { code: 'darzihub', legacy: false } }), kp.privateKeyHex);
+  assert.equal(verifyLicense(licA, { publicKeyHex: kp.publicKeyHex, machineId: idA, projectCode: 'darzihub' }).ok, true);
+  assert.deepEqual(verifyLicense(licA, { publicKeyHex: kp.publicKeyHex, machineId: idB, projectCode: 'darzihub' }), { ok: false, reason: 'machine' });
+  assert.equal(verifyLicense(licA, { publicKeyHex: kp.publicKeyHex, machineId: idA.toLowerCase(), projectCode: 'darzihub' }).ok, true);
+}
+console.log('license device-id tests passed');
