@@ -23,7 +23,7 @@ let fontCache: string | null = null;
 async function loadUrduFont(): Promise<string | null> {
   if (fontCache) return fontCache;
   try {
-    const asset = Asset.fromModule(require('@expo-google-fonts/noto-nastaliq-urdu/400Regular/NotoNastaliqUrdu_400Regular.ttf'));
+    const asset = Asset.fromModule(require('../../../../assets/fonts/AlviNastaleeq.ttf'));
     await asset.downloadAsync();
     if (!asset.localUri) return null;
     fontCache = await new File(asset.localUri).base64();
