@@ -8,4 +8,7 @@ export const PUBLIC_KEY_HEX = "9c646b9a4b22ac15a5f1ef4084f9ab599bc9eec4b02c9efa4
 export const DEVICE_PREFIX = "DarziHub";
 // DarziHub already issued licenses bound to the old 20-hex ID: keep accepting them. (Set false once all customers have new licenses.)
 export const ACCEPT_LEGACY_DEVICE_ID = true;
+// RetailX License Hub (server): activation record, heartbeat and kill switch. The offline license check always stays the base;
+// the Hub can only ADD a block. If the Hub cannot be reached the app keeps working on its offline license. Set "" to disable.
+export const HUB_URL = "https://retail-x-license-hub-phi.vercel.app";
 export const KEY_CONFIGURED = /^[0-9a-fA-F]{64}$/.test(PUBLIC_KEY_HEX);

@@ -35,8 +35,9 @@ export const TONES = {
   red: { bg: 'rgba(255,71,87,0.12)', fg: C.danger },
 };
 
-export const FONT_UR = 'NotoNastaliqUrdu_400Regular';
-export const FONT_UR_BOLD = 'NotoNastaliqUrdu_700Bold';
+// Urdu font: Alvi Nastaleeq (file copied to assets/fonts by scripts/copy-font.mjs). One weight only, so bold uses the same family.
+export const FONT_UR = 'AlviNastaleeq';
+export const FONT_UR_BOLD = 'AlviNastaleeq';
 
 // Soft shadow. Only ever put it on views with an opaque background.
 export const shadow = Platform.select({
