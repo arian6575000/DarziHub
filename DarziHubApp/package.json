@@ -51,8 +51,10 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "fonts": "node scripts/copy-font.mjs",
+    "prestart": "node scripts/copy-font.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "tsx tests/repo.test.ts && tsx tests/license.test.ts && tsx tests/shoptype.test.ts && tsx tests/permissions.test.ts",
+    "test": "tsx tests/repo.test.ts && tsx tests/license.test.ts && tsx tests/shoptype.test.ts && tsx tests/permissions.test.ts && tsx tests/trial.test.ts && tsx tests/hub.test.ts",
     "license:project": "node tools/make-project.mjs"
   },
   "private": true

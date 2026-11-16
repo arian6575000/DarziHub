@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SQLite from 'expo-sqlite';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NotoNastaliqUrdu_400Regular, NotoNastaliqUrdu_700Bold, useFonts } from '@expo-google-fonts/noto-nastaliq-urdu';
+import { useFonts } from 'expo-font';
 import { AppProvider } from '../ctx/AppContext';
 import { initRepo } from '../db/repo';
 import { fromExpo } from '../db/expoAdapter';
@@ -18,7 +18,7 @@ import { C } from '../lib/theme';
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts({ NotoNastaliqUrdu_400Regular, NotoNastaliqUrdu_700Bold });
+  const [fontsLoaded, fontError] = useFonts({ AlviNastaleeq: require('../../assets/fonts/AlviNastaleeq.ttf') });
   const [dbReady, setDbReady] = useState(false);
   const [dbError, setDbError] = useState<string | null>(null);
   const [locked, setLocked] = useState(false);
